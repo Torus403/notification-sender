@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/push-core"]
+members = ["crates/push-core", "crates/push-db"]
 
 [workspace.package]
 edition = "2024"
@@ -10,9 +10,13 @@ publish = false
 
 [workspace.dependencies]
 proptest = "1"
+push-core = { path = "crates/push-core" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "tls-rustls", "postgres", "uuid", "time", "macros", "migrate"] }
 thiserror = "2"
+time = "0.3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 uuid = { version = "1", features = ["v7"] }
 
 [workspace.lints.rust]
