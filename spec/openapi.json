@@ -1,0 +1,9 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "NotificationSender API",
+		"version": "0.0.0",
+		"description": "Placeholder. apps/engine (push-api) will generate this file; do not edit it by hand once it does."
+	},
+	"paths": {}
+}

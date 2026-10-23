@@ -1,0 +1,119 @@
+---
+import { Icon } from "astro-iconset/components";
+import type { BlockComponentProps } from "emdash/ui";
+import type { PageContentBlock } from "../../../emdash-env";
+import { toParagraphs } from "../../utils/text";
+
+type FeaturesBlock = Extract<PageContentBlock, { _type: "marketing_features" }>;
+type Props = BlockComponentProps<FeaturesBlock>;
+
+const { value } = Astro.props;
+const { anchor_id, eyebrow, headline, subheadline, features } = value;
+
+const iconMap: Record<string, string> = {
+	zap: "ph:lightning",
+	shield: "ph:shield-check",
+	users: "ph:users-three",
+	chart: "ph:chart-bar",
+	code: "ph:code",
+	globe: "ph:globe",
+	heart: "ph:heart",
+	star: "ph:star",
+	check: "ph:check-circle",
+	lock: "ph:lock",
+	clock: "ph:clock",
+	cloud: "ph:cloud",
+	building: "ph:buildings",
+	leaf: "ph:leaf",
+	gauge: "ph:gauge",
+	thermometer: "ph:thermometer-simple",
+	plug: "ph:plug",
+	bell: "ph:bell-simple",
+	file: "ph:file-text",
+	sun: "ph:sun",
+	trend: "ph:trend-up",
+};
+---
+
+<section
+	id={anchor_id || undefined}
+	class="sheet sheet--sunken sheet-section"
+>
+	<div class="container sheet-body">
+		<header class="section-header">
+			{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+			<h2 class="section-headline">
+				{headline}
+				{subheadline && " "}
+				{
+					subheadline && (
+						<span class="section-headline__muted">{subheadline}</span>
+					)
+				}
+			</h2>
+		</header>
+		<ul class="features" role="list">
+			{
+				features.map((feature) => (
+					<li class="card card--lift feature">
+						<span class="icon-tile" aria-hidden="true">
+							<Icon name={iconMap[feature.icon] ?? "ph:sparkle"} />
+						</span>
+						<h3 class="feature__title">{feature.title}</h3>
+						{toParagraphs(feature.description).map((paragraph) => (
+							<p class="feature__description">{paragraph}</p>
+						))}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.features {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 16px;
+		list-style: none;
+	}
+
+	.feature {
+		padding: 28px 28px 32px;
+	}
+
+	.feature__title {
+		margin-block-start: 28px;
+		font-size: 16px;
+		line-height: 1.4;
+		letter-spacing: -0.005em;
+	}
+
+	.feature__description {
+		margin-block-start: 8px;
+		font-size: 15px;
+		line-height: 1.6;
+		color: var(--color-muted);
+		text-wrap: pretty;
+	}
+
+	@media (max-width: 960px) {
+		.features {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 640px) {
+		.features {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.feature {
+			padding: 24px;
+		}
+
+		.feature__title {
+			margin-block-start: 20px;
+		}
+	}
+</style>
