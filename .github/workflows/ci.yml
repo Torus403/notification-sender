@@ -8,12 +8,17 @@ on:
 jobs:
   rust:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/engine
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/engine
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
@@ -34,6 +39,9 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       PGDATABASE: push
+    defaults:
+      run:
+        working-directory: apps/engine
     steps:
       - uses: actions/checkout@v4
       - name: Apply migrations
