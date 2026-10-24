@@ -1,6 +1,29 @@
 # engine
 
-The push delivery engine: one Cargo workspace for every Rust crate, deployed to AWS.
+The core of the product: the public API and the push delivery engine, in one Cargo workspace, deployed to AWS.
+
+## Purpose
+
+Accept a customer's request to notify a user, deliver it to each of that user's devices through APNs and FCM, and record an exact outcome for every device. Everything a customer depends on for correctness lives here.
+
+## Scope
+
+In scope:
+
+- **Server API** (secret key): send a notification, read its status and per-device deliveries, cancel, manage installations and users, import tokens.
+- **Device API** (publishable key, then installation token): register a device, update its token and permission, bind it to a user, report interactions.
+- **Management API** (dashboard session): projects, environments, apps, provider credentials, API keys, templates, test sends, history. Used by `apps/platform`.
+- **Delivery**: recipient resolution, APNs and FCM transports, retries, recovery sweeps, provider credential storage and verification, metering.
+- `spec/openapi.json`, generated from `push-api`.
+
+Out of scope: dashboard sign-in and billing plans (`apps/platform`), the websites, SDKs and anything that runs on a device (see `PLAN.md`, Later).
+
+## Documents
+
+- [`ARCHITECTURE.md`](ARCHITECTURE.md): how the engine runs on AWS, how it scales, fails and what it costs, and the open decisions.
+- [Push Delivery Engine Specification v0.1](https://claude.ai/artifact/9xNDseoAYnaWxst78tQsqV): the delivery protocol: data model, state machines, transactions, queue contract, provider error tables and invariants.
+
+## Layout
 
 | Path | What it is |
 | --- | --- |
@@ -9,7 +32,7 @@ The push delivery engine: one Cargo workspace for every Rust crate, deployed to 
 | `migrations/` | PostgreSQL schema. Constraints carry the invariants the database can enforce. |
 | `tests/sql/` | Schema invariant checks, run against a freshly migrated database. |
 
-`push-providers`, `push-api` and `push-worker` join the workspace under `crates/` as the engine spec's milestones land.
+`push-providers` (the APNs and FCM transports), `push-api` and `push-worker` join the workspace under `crates/` as the milestones in `PLAN.md` land.
 
 ## Running checks
 

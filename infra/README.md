@@ -1,7 +1,10 @@
 # infra
 
 Infrastructure as code.
-- `aws/`: the engine's AWS resources (compute, Postgres, queues, IAM role for GitHub OIDC deploys).
-- `cloudflare/`: account-level Cloudflare setup (DNS, zones, shared bindings). Each app keeps its own `wrangler.jsonc`.
 
-Empty for now. The IaC tool (CDK, Terraform/OpenTofu or SST) and the engine's AWS compute are still open decisions.
+| Path          | Purpose                                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `aws/`        | The engine's AWS resources: network, ECS services, database, queue, KMS keys, IAM, alarms.                                      |
+| `cloudflare/` | Account-level Cloudflare setup shared by the websites: DNS, zones and shared bindings. Each app keeps its own `wrangler.jsonc`. |
+
+Empty for now. The AWS design is in `apps/engine/ARCHITECTURE.md`; the IaC tool (OpenTofu or Terraform) is open decision A4 there.

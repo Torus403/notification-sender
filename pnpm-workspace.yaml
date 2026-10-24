@@ -2,10 +2,7 @@ packages:
   - apps/web
   - apps/platform
   - apps/docs
-  - apps/mobile
   - packages/*
-  - sdks/server/typescript
-  - sdks/client/react-native
 
 # Only these packages may run install scripts.
 allowBuilds:
