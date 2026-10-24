@@ -30,4 +30,4 @@ pnpm typecheck
 pnpm lint         # Biome
 ```
 
-CI runs only what a change touches: `engine.yml` for `apps/engine`, and `js.yml` for the TypeScript workspace (Turborepo `--affected`).
+CI is paused: `engine.yml` (for `apps/engine`) and `js.yml` (for the TypeScript workspace) run only when started by hand from the Actions tab.
