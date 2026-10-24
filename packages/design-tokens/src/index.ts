@@ -1,4 +1,4 @@
-// The same tokens as tokens.css, for places that can't read CSS variables (React Native).
+// The same tokens as tokens.css, for places that can't read CSS variables (generated images, emails).
 export const tokens = {
 	color: {
 		bg: "#ffffff",

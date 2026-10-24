@@ -1,9 +1,9 @@
 name: js
 
+# Paused: runs only when started by hand from the Actions tab. To re-enable, restore the
+# push and pull_request triggers from git history.
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   check:

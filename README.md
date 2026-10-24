@@ -2,24 +2,21 @@
 
 A managed push notification service for iOS and Android: one API for your backend, direct delivery through APNs and FCM, and honest per-device results.
 
-This is the company monorepo. Each app builds and deploys on its own.
+This is the company monorepo. Each app builds and deploys on its own. [`PLAN.md`](PLAN.md) says what ships first, in what order, and what is deliberately left for later.
 
 ## Layout
 
-| Path            | What it is                                                                       | Deploys to                      |
-| --------------- | -------------------------------------------------------------------------------- | ------------------------------- |
-| `apps/engine`   | Push delivery engine. Rust, one Cargo workspace.                                 | AWS                             |
-| `apps/web`      | Marketing site and blog. EmDash (Astro).                                         | Cloudflare                      |
-| `apps/platform` | Customer app. TanStack Start.                                                    | Cloudflare Workers              |
-| `apps/docs`     | Developer docs. Astro Starlight.                                                 | Cloudflare                      |
-| `apps/mobile`   | Mobile app. Expo.                                                                | App Store, Google Play          |
-| `packages/*`    | Shared TypeScript: `config`, `design-tokens`, `ui`, `api-client`. Internal only. |                                 |
-| `sdks/server/*` | TypeScript, Python, Go and Rust SDKs for sending notifications.                  | npm, PyPI, Go mirror, crates.io |
-| `sdks/client/*` | Swift, Kotlin, React Native and Flutter SDKs for mobile apps.                    | SPM mirror, Maven, npm, pub.dev |
-| `spec/`         | `openapi.json`, the API contract everything else is generated from.              |                                 |
-| `infra/`        | Infrastructure as code for AWS and Cloudflare.                                   |                                 |
-| `tools/`        | Repo scripts (SDK mirroring, codegen).                                           |                                 |
-| `examples/`     | Sample apps for the SDK quickstarts.                                             |                                 |
+| Path            | What it is                                                                       | Deploys to         |
+| --------------- | -------------------------------------------------------------------------------- | ------------------ |
+| `apps/engine`   | The core API and push delivery engine. Rust, one Cargo workspace.                | AWS                |
+| `apps/platform` | Customer dashboard. TanStack Start.                                              | Cloudflare Workers |
+| `apps/web`      | Marketing site and blog. EmDash (Astro).                                         | Cloudflare         |
+| `apps/docs`     | Developer docs. Astro Starlight.                                                 | Cloudflare         |
+| `packages/*`    | Shared TypeScript: `config`, `design-tokens`, `ui`, `api-client`. Internal only. |                    |
+| `spec/`         | `openapi.json`, the API contract the dashboard client and API reference use.     |                    |
+| `infra/`        | Infrastructure as code for AWS and Cloudflare.                                   |                    |
+
+Every folder's README states its purpose and scope. The engine's design is in [`apps/engine/ARCHITECTURE.md`](apps/engine/ARCHITECTURE.md).
 
 ## Working in the repo
 
@@ -33,4 +30,4 @@ pnpm typecheck
 pnpm lint         # Biome
 ```
 
-CI runs only what a change touches: `engine.yml` for `apps/engine`, `js.yml` for the TypeScript workspace (Turborepo `--affected`), and `sdks.yml` per SDK. `mirror-sdks.yml` pushes the Swift and Go SDKs to their public repos on a release tag.
+CI is paused: `engine.yml` (for `apps/engine`) and `js.yml` (for the TypeScript workspace) run only when started by hand from the Actions tab.
