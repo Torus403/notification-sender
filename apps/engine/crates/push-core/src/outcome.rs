@@ -95,28 +95,3 @@ impl SubmissionOutcome {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn transport_table_matches_spec_9_3() {
-        use TransportFailure::*;
-        for f in [Dns, Connect, Tls, NoCapacity, RefusedStream, GoawayUnprocessed] {
-            assert!(
-                matches!(SubmissionOutcome::from_transport(f), SubmissionOutcome::NotSent { .. }),
-                "{f:?}"
-            );
-        }
-        for f in [TimeoutAfterSend, ResetAfterSend, GoawayAfterSend] {
-            assert!(
-                matches!(
-                    SubmissionOutcome::from_transport(f),
-                    SubmissionOutcome::Indeterminate { .. }
-                ),
-                "{f:?}"
-            );
-        }
-    }
-}

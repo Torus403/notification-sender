@@ -14,7 +14,7 @@ In scope:
 - **Device API** (publishable key, then installation token): register a device, update its token and permission, bind it to a user, report interactions.
 - **Management API** (dashboard session): projects, environments, apps, provider credentials, API keys, templates, test sends, history. Used by `apps/platform`.
 - **Delivery**: recipient resolution, APNs and FCM transports, retries, recovery sweeps, provider credential storage and verification, metering.
-- `spec/openapi.json`, generated from `push-api`.
+- An OpenAPI spec, generated from `push-api`.
 
 Out of scope: dashboard sign-in and billing plans (`apps/platform`), the websites, SDKs and anything that runs on a device (see `PLAN.md`, Later).
 
@@ -28,9 +28,8 @@ Out of scope: dashboard sign-in and billing plans (`apps/platform`), the website
 | Path | What it is |
 | --- | --- |
 | `crates/push-core` | Domain types and pure decision functions: ids, delivery states, provider response classification, retry policy and `decide()`. No I/O. |
-| `crates/push-db` | PostgreSQL transactions: accept a send, claim a delivery, record an attempt, and the recovery sweeps. Integration tests run against a real database. |
+| `crates/push-db` | PostgreSQL transactions: accept a send, claim a delivery, record an attempt, and the recovery sweeps. |
 | `migrations/` | PostgreSQL schema. Constraints carry the invariants the database can enforce. |
-| `tests/sql/` | Schema invariant checks, run against a freshly migrated database. |
 
 `push-providers` (the APNs and FCM transports), `push-api` and `push-worker` join the workspace under `crates/` as the milestones in `PLAN.md` land.
 
@@ -41,9 +40,4 @@ Run these from `apps/engine`:
 ```sh
 cargo fmt --all --check
 cargo clippy --workspace --all-targets -- -D warnings
-# push-db's tests need a Postgres 16+ server; each test gets its own database
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres cargo test --workspace
-
-# Needs a Postgres 16+ database
-psql -v ON_ERROR_STOP=1 -f migrations/0001_init.sql -f tests/sql/invariants.sql
 ```

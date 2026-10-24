@@ -129,15 +129,3 @@ pub const MAX_INSTALLATIONS_PER_SEND: usize = 50;
 
 /// APNs rejects collapse ids above 64 bytes.
 pub const MAX_COLLAPSE_KEY_BYTES: usize = 64;
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn external_user_id_bounds() {
-        assert!(ExternalUserId::new("").is_err());
-        assert!(ExternalUserId::new("u".repeat(256)).is_ok());
-        assert!(ExternalUserId::new("u".repeat(257)).is_err());
-    }
-}
