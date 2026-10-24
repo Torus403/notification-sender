@@ -1,0 +1,37 @@
+name: mirror-sdks
+
+# Pushes the Swift and Go SDKs to their public mirror repos when a release tag is pushed:
+#   sdk-swift@1.2.0 -> Torus403/notification-sender-swift, tag 1.2.0
+#   sdk-go@1.2.0    -> Torus403/notification-sender-go, tag v1.2.0
+# Needs a MIRROR_TOKEN secret with write access to both mirror repos.
+on:
+  push:
+    tags: ["sdk-swift@*", "sdk-go@*"]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Pick the SDK
+        id: sdk
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          version="${tag#*@}"
+          case "$tag" in
+            sdk-swift@*) echo "prefix=sdks/client/swift" >> "$GITHUB_OUTPUT"
+                         echo "repo=Torus403/notification-sender-swift" >> "$GITHUB_OUTPUT"
+                         echo "version=$version" >> "$GITHUB_OUTPUT" ;;
+            sdk-go@*)    echo "prefix=sdks/server/go" >> "$GITHUB_OUTPUT"
+                         echo "repo=Torus403/notification-sender-go" >> "$GITHUB_OUTPUT"
+                         echo "version=v$version" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - name: Push to the mirror
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+        run: |
+          tools/mirror-sdk.sh "${{ steps.sdk.outputs.prefix }}" \
+            "https://x-access-token:${MIRROR_TOKEN}@github.com/${{ steps.sdk.outputs.repo }}.git" \
+            "${{ steps.sdk.outputs.version }}"

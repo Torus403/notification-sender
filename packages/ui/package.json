@@ -1,0 +1,24 @@
+{
+	"name": "@notification-sender/ui",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"@notification-sender/design-tokens": "workspace:*"
+	},
+	"peerDependencies": {
+		"react": "^19.2.0"
+	},
+	"devDependencies": {
+		"@notification-sender/config": "workspace:*",
+		"@types/react": "^19.2.0",
+		"react": "^19.2.0",
+		"typescript": "~6.0.3"
+	}
+}

@@ -1,0 +1,171 @@
+---
+import { Icon } from "astro-iconset/components";
+import { sanitizeHref } from "emdash";
+import { type BlockComponentProps, Image } from "emdash/ui";
+import type { PageContentBlock } from "../../../emdash-env";
+
+type HeroBlock = Extract<PageContentBlock, { _type: "marketing_hero" }>;
+type Props = BlockComponentProps<HeroBlock>;
+
+const { value } = Astro.props;
+const { anchor_id, eyebrow, headline, subheadline, image, image_caption, centered } = value;
+
+const eyebrowUrl = value.eyebrow_url ? sanitizeHref(value.eyebrow_url) : undefined;
+const primaryCta =
+	value.primary_cta_label && value.primary_cta_url
+		? { label: value.primary_cta_label, url: sanitizeHref(value.primary_cta_url) }
+		: undefined;
+const secondaryCta =
+	value.secondary_cta_label && value.secondary_cta_url
+		? { label: value.secondary_cta_label, url: sanitizeHref(value.secondary_cta_url) }
+		: undefined;
+---
+
+<section
+	id={anchor_id || undefined}
+	class:list={["hero", { "hero--centered": centered }]}
+>
+	<div class="container">
+		{
+			eyebrow && eyebrowUrl && (
+				<a href={eyebrowUrl} class="hero__announce rise">
+					{eyebrow}
+					<Icon name="ph:arrow-right" aria-hidden="true" class="arrow" />
+				</a>
+			)
+		}
+		{eyebrow && !eyebrowUrl && <p class="hero__announce rise">{eyebrow}</p>}
+		<h1 class="display hero__headline rise">{headline}</h1>
+		{
+			(subheadline || primaryCta || secondaryCta) && (
+				<div class="hero__row rise">
+					{subheadline && <p class="lead hero__lead">{subheadline}</p>}
+					{(primaryCta || secondaryCta) && (
+						<div class="actions">
+							{primaryCta && (
+								<a href={primaryCta.url} class="btn btn-primary btn-lg">
+									{primaryCta.label}
+									<Icon name="ph:arrow-right" aria-hidden="true" class="arrow" />
+								</a>
+							)}
+							{secondaryCta && (
+								<a href={secondaryCta.url} class="btn btn-secondary btn-lg">
+									{secondaryCta.label}
+								</a>
+							)}
+						</div>
+					)}
+				</div>
+			)
+		}
+	</div>
+	{
+		image && (
+			<figure class="sheet media settle hero__media">
+				<div class="media__img">
+					<Image
+						image={image}
+						priority
+						sizes="(max-width: 960px) 178vw, min(100vw, 1680px)"
+					/>
+				</div>
+				{image_caption && (
+					<figcaption class="media-chip">
+						{image_caption}
+					</figcaption>
+				)}
+			</figure>
+		)
+	}
+</section>
+
+<style>
+	.hero {
+		padding-block-start: clamp(56px, 7vw, 104px);
+	}
+
+	.hero__announce {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		min-height: 34px;
+		padding-block: 6px;
+		padding-inline: 14px;
+		border-radius: 17px;
+		background: var(--color-surface);
+		box-shadow: var(--shadow-card);
+		font-size: 13.5px;
+		line-height: 1.35;
+		color: var(--color-text-secondary);
+		transition: box-shadow 160ms var(--ease-out);
+	}
+
+	.hero__announce :global(.arrow) {
+		flex: none;
+		color: var(--color-muted);
+	}
+
+	a.hero__announce:hover {
+		box-shadow: var(--shadow-card-hover);
+	}
+
+	.hero__headline {
+		--rise-index: 1;
+		max-width: 16ch;
+		font-size: var(--font-size-display);
+		line-height: var(--leading-tight);
+		letter-spacing: var(--tracking-tight);
+	}
+
+	.hero__announce + .hero__headline {
+		margin-block-start: 28px;
+	}
+
+	.hero__row {
+		--rise-index: 2;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: end;
+		gap: 32px;
+		margin-block-start: 36px;
+	}
+
+	.hero__lead {
+		max-width: 50ch;
+	}
+
+	.hero__media {
+		margin-block-start: clamp(48px, 5vw, 72px);
+		aspect-ratio: 21 / 9;
+		border-radius: var(--radius-sheet);
+	}
+
+	.hero--centered .container {
+		text-align: center;
+	}
+
+	.hero--centered .hero__headline {
+		max-width: 18ch;
+		margin-inline: auto;
+		font-size: clamp(44px, 6.2vw, 88px);
+	}
+
+	.hero--centered .hero__row {
+		grid-template-columns: minmax(0, 1fr);
+		justify-items: center;
+	}
+
+	.hero--centered .actions {
+		justify-content: center;
+	}
+
+	@media (max-width: 960px) {
+		.hero__row {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.hero__media {
+			aspect-ratio: 1;
+		}
+	}
+</style>

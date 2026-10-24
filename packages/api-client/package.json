@@ -1,0 +1,21 @@
+{
+	"name": "@notification-sender/api-client",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"generate": "openapi-typescript ../../spec/openapi.json -o src/schema.d.ts",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"openapi-fetch": "^0.17.0"
+	},
+	"devDependencies": {
+		"@notification-sender/config": "workspace:*",
+		"openapi-typescript": "^7.13.0",
+		"typescript": "~6.0.3"
+	}
+}

@@ -1,0 +1,4 @@
+{
+	"extends": "@notification-sender/config/tsconfig/react-library.json",
+	"include": ["src"]
+}

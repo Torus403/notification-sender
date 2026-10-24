@@ -1,9 +1,11 @@
-name: ci
+name: engine
 
 on:
   push:
     branches: [main]
+    paths: ["apps/engine/**", ".github/workflows/engine.yml"]
   pull_request:
+    paths: ["apps/engine/**", ".github/workflows/engine.yml"]
 
 jobs:
   rust:

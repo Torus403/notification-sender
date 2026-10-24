@@ -1,0 +1,4 @@
+{
+	"extends": "@notification-sender/config/tsconfig/base.json",
+	"include": ["src"]
+}
