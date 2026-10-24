@@ -1,6 +1,6 @@
 # platform
 
-The customer dashboard. TanStack Start, deployed to Cloudflare Workers.
+The customer dashboard. Nothing is here yet; this README describes what will be. Planned stack: TanStack Start, deployed to Cloudflare Workers.
 
 ## Purpose
 
@@ -16,13 +16,4 @@ In scope:
 - Delivery history: notifications, per-device deliveries, every attempt with the provider's raw reason.
 - Templates, usage and billing.
 
-Out of scope: any delivery logic or direct database access. Everything goes through the engine's management API, using `@notification-sender/api-client`.
-
-## Working on it
-
-```sh
-pnpm --filter @notification-sender/platform dev      # http://localhost:3000
-pnpm --filter @notification-sender/platform deploy   # build and wrangler deploy
-```
-
-Routes live in `src/routes` (file-based). Shared UI comes from `@notification-sender/ui` and brand tokens from `@notification-sender/design-tokens`.
+Out of scope: any delivery logic or direct database access. Everything goes through the engine's management API, using a typed client generated from the engine's OpenAPI spec.
