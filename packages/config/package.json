@@ -1,9 +1,0 @@
-{
-	"name": "@notification-sender/config",
-	"private": true,
-	"version": "0.0.0",
-	"exports": {
-		"./tsconfig/base.json": "./tsconfig/base.json",
-		"./tsconfig/react-library.json": "./tsconfig/react-library.json"
-	}
-}

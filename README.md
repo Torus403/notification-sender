@@ -6,28 +6,24 @@ This is the company monorepo. Each app builds and deploys on its own. [`PLAN.md`
 
 ## Layout
 
-| Path            | What it is                                                                       | Deploys to         |
-| --------------- | -------------------------------------------------------------------------------- | ------------------ |
-| `apps/engine`   | The core API and push delivery engine. Rust, one Cargo workspace.                | AWS                |
-| `apps/platform` | Customer dashboard. TanStack Start.                                              | Cloudflare Workers |
-| `apps/web`      | Marketing site and blog. EmDash (Astro).                                         | Cloudflare         |
-| `apps/docs`     | Developer docs. Astro Starlight.                                                 | Cloudflare         |
-| `packages/*`    | Shared TypeScript: `config`, `design-tokens`, `ui`, `api-client`. Internal only. |                    |
-| `spec/`         | `openapi.json`, the API contract the dashboard client and API reference use.     |                    |
-| `infra/`        | Infrastructure as code for AWS and Cloudflare.                                   |                    |
+| Path            | What it is                                                        | Deploys to         |
+| --------------- | ----------------------------------------------------------------- | ------------------ |
+| `apps/engine`   | The core API and push delivery engine. Rust, one Cargo workspace. | AWS                |
+| `apps/platform` | Customer dashboard (planned; README only).                        | Cloudflare Workers |
+| `apps/web`      | Marketing site and blog (planned; README only).                   | Cloudflare         |
+| `apps/docs`     | Developer docs (planned; README only).                            | Cloudflare         |
+| `packages/*`    | Shared TypeScript (none yet). Internal only.                      |                    |
+| `infra/`        | Infrastructure as code for AWS and Cloudflare.                    |                    |
 
 Every folder's README states its purpose and scope. The engine's design is in [`apps/engine/ARCHITECTURE.md`](apps/engine/ARCHITECTURE.md).
 
 ## Working in the repo
 
-TypeScript uses pnpm workspaces and Turborepo; Rust uses Cargo in `apps/engine`.
+Each app owns its build, format and lint tooling; nothing language-specific lives at the root. The engine uses Cargo from `apps/engine`. TypeScript apps are pnpm workspaces, each with its own Biome config.
 
 ```sh
 pnpm install
-pnpm dev          # every app's dev server
-pnpm build        # build everything (cached by Turborepo)
-pnpm typecheck
-pnpm lint         # Biome
+pnpm -r <script>  # run a script in every TypeScript app, e.g. pnpm lint, pnpm build
 ```
 
-CI is paused: `engine.yml` (for `apps/engine`) and `js.yml` (for the TypeScript workspace) run only when started by hand from the Actions tab.
+CI is one workflow per app, triggered by path filters on that app's folder.

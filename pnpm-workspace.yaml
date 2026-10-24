@@ -1,12 +1,3 @@
 packages:
-  - apps/web
-  - apps/platform
-  - apps/docs
+  - apps/*
   - packages/*
-
-# Only these packages may run install scripts.
-allowBuilds:
-  esbuild: true
-  lightningcss: true
-  sharp: true
-  workerd: true
